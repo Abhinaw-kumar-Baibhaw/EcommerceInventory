@@ -26,12 +26,14 @@ public class InventoryServiceImplementation implements InventoryService {
     }
 
     @Override
+//    @KafkaListener(topics = "order-created", groupId = "inventory-service-group")
     public ProductInventory update(Long productId,ProductInventory productInventory) {
         Optional<ProductInventory> inventory = inventoryRepo.findById(productId);
         if(inventory.isPresent()){
             ProductInventory productInventory1 = inventory.get();
             productInventory1.setQuantity(productInventory.getQuantity());
             inventoryRepo.save(productInventory1);
+//            System.out.println("Received Order Event from kafka");
         }
         return productInventory;
     }
